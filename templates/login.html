@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Test oauth2{% endblock %}</title>
+</head>
+<body id="body_id">
+<div class="container-fluid">
+    <div class="col-sm-12 col-md-12 main">
+        <div class="row">
+            <div class="col-md-12, head_text">
+                <h1>Login</h1>
+            </div>
+        </div>
+        <br>
+        <div style="width: 300px; padding: 10px; margin: auto">
+            <form action="{% url 'social:begin' 'oauth2' %}">
+                <button type="submit" >
+                    <span class="glyphicon glyphicon-user"></span>&nbsp;Вхід
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

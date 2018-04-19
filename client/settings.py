@@ -25,7 +25,7 @@ SECRET_KEY = 'vrx9s%@b8ajs$cx2&nr+um%2ug8+bqrk%8vwq4lb6)t_rf33x='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'oauth',
+    'social_django',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -47,14 +50,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'client.urls'
+LOGIN_URL = '/login/'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,3 +127,31 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+BASE_URL = "http://localhost:8001/"
+AUTHORIZATION_URL = BASE_URL + 'oauth2/authorize/'
+ACCESS_TOKEN_URL = BASE_URL + 'oauth2/token/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+
+
+SOCIAL_AUTH_OAUTH2_KEY = 'RZu4URfQzjupE1FDUXWiChHaDscAPFerLA2oP2iT'
+SOCIAL_AUTH_OAUTH2_SECRET = 'MnF45NANkUJQo7o9cAC3g4WfqDRjt9H7eiAzR3p0V67Lf9plXK1bkUZd1qe81XfIttodSqeuGoqjb6FKgj76SDQnbpHqG0S3jGFVZjuonEZhBbnOC5IekxjQjvnv4VhU'
+
+
+AUTHENTICATION_BACKENDS = (
+    'oauth.views.DMSUOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+    'apps.user_profile.social_pipeline.load_additional_response_data',
+)
